@@ -1,0 +1,43 @@
+*, *::before, *::after {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+body {
+    overflow: hidden;
+    background-color: #6BC0E6;
+}
+
+.ninja-blocks-container {
+    width: 100vw;
+    height: 100vh;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    overflow: visible;
+}
+
+.squares-grid {
+    position: relative;
+    display: flex;
+    flex-wrap: wrap;
+    width: 500px;
+    height: 500px;
+    background-image: url('/assets/square.svg');
+    background-color: white;
+    background-size: 50px;
+    background-repeat: repeat;
+    transform: translate(0, 0);
+}
+
+#player {
+    position: absolute;
+    border-radius: 50%;
+    top: 0;
+    left: 0;
+    width: 50px;
+    height: 50px;
+    background: #B44C64;
+    transform: scale(0.8);
+}

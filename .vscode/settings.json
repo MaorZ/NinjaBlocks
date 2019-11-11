@@ -1,0 +1,15 @@
+{
+  "files.exclude": {
+    "tsconfig.json": true,
+    "webpack-test.config.js": true,
+    "tslint.json": true,
+    "webpack.config.js": true,
+    "spec.bundle.js": true,
+    ".babelrc": true,
+    ".gitignore": true,
+    ".travis.yml": true,
+    "karma.config.js": true,
+    "package-lock.json": true,
+    ".vscode": true
+  }
+}
