@@ -9,7 +9,7 @@
     ".gitignore": true,
     ".travis.yml": true,
     "karma.config.js": true,
-    "package-lock.json": true,
-    ".vscode": true
+    ".vscode": true,
+    "README.md": true
   }
 }

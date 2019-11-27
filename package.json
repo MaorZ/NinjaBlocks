@@ -1,7 +1,7 @@
 {
-  "name": "webpack-typescript-starter",
+  "name": "ninja-blocks",
   "version": "0.0.1",
-  "description": "A simple Webpack 4 starter with TypeScript transpilation",
+  "description": "A cool Hack n Slash RPG between squeres on top of a 3D cube",
   "main": "index.js",
   "scripts": {
     "start": "webpack-dev-server --port 9000 --inline --progress --profile --colors --watch --content-base src/ --mode development",
@@ -16,12 +16,18 @@
   "keywords": [
     "webpack",
     "webpack4",
-    "typescript"
+    "typescript",
+    "ninja",
+    "blocks",
+    "ninja blocks",
+    "RPG",
+    "cube",
+    "3d"
   ],
-  "author": "Juri Strumpflohner",
+  "author": "Maor Zigel",
   "license": "ISC",
   "dependencies": {
-    "gsap": "^3.0.0",
+    "gsap": "^3.0.1",
     "rxjs": "6.5.3"
   },
   "devDependencies": {
