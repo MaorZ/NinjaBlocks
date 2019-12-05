@@ -11,10 +11,14 @@ html {
   font-size: 16px;
 }
 
+body {
+  background-color: cadetblue;
+  overflow: hidden;
+}
+
 .level-container {
   width: 100vw;
   height: 100vh;
-  background-color: cadetblue;
   display: flex;
   justify-content: center;
   align-items: center;
