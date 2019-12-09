@@ -10,6 +10,7 @@
     ".travis.yml": true,
     "karma.config.js": true,
     ".vscode": true,
-    "README.md": true
+    "README.md": true,
+    "node_modules": true
   }
 }
