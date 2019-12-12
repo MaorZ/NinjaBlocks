@@ -1,115 +1,53 @@
 import { TweenLite } from 'gsap';
 import { fromEvent } from 'rxjs';
-import {} from 'rxjs/operators';
+import { } from 'rxjs/operators';
+import { MotionDirection } from './model/motion';
+import { Player, playerMotionConfig } from './model/player';
+import { MotionService } from './services/motion.service';
+import { UtilsService } from './services/utils.service';
 
-interface MotionVector {
-  x?: string;
-  y?: string;
-}
-
-let player = document.getElementById('player');
+let playerElement = document.getElementById('player');
 let levelContainer = document.getElementById('levelContainer');
-let playerIsMoving = false;
-let tick = 0;
-focusOnPlayer();
+let player = new Player(playerElement);
+UtilsService.focusLevelOnElement(playerElement, levelContainer);
 
 console.log('Welcome to Ninja Blocks');
 
 fromEvent(document, 'keydown').subscribe((e: KeyboardEvent) => {
-  if (!playerIsMoving) {
+  if (!player.isMoving) {
     switch (e.key) {
       case 'w':
-        moveTo(player, { y: '-=5rem' });
-        moveTo(levelContainer, { y: '+=5rem' });
-        playerIsMoving = true;
+        player.moveTo(MotionDirection.UP, 1);
+        MotionService.moveTo(levelContainer, playerMotionConfig, MotionDirection.DOWN, 1);
         break;
       case 'W':
-        moveTo(player, { y: '-=10rem' }, true);
-        moveTo(levelContainer, { y: '+=10rem' });
-        playerIsMoving = true;
+        player.dashTo(MotionDirection.UP, 2);
+        MotionService.moveTo(levelContainer, playerMotionConfig, MotionDirection.DOWN, 2);
         break;
       case 's':
-        moveTo(player, { y: '+=5rem' });
-        moveTo(levelContainer, { y: '-=5rem' });
-        playerIsMoving = true;
+        player.moveTo(MotionDirection.DOWN, 1);
+        MotionService.moveTo(levelContainer, playerMotionConfig, MotionDirection.UP, 1);
         break;
       case 'S':
-        moveTo(player, { y: '+=10rem' }, true);
-        moveTo(levelContainer, { y: '-=10rem' });
-        playerIsMoving = true;
+        player.dashTo(MotionDirection.DOWN, 2);
+        MotionService.moveTo(levelContainer, playerMotionConfig, MotionDirection.UP, 2);
         break;
       case 'a':
-        moveTo(player, { x: '-=5rem' });
-        moveTo(levelContainer, { x: '+=5rem' });
-        playerIsMoving = true;
+        player.moveTo(MotionDirection.LEFT, 1);
+        MotionService.moveTo(levelContainer, playerMotionConfig, MotionDirection.RIGHT, 1);
         break;
       case 'A':
-        moveTo(player, { x: '-=10rem' }, true);
-        moveTo(levelContainer, { x: '+=10rem' });
-        playerIsMoving = true;
+        player.dashTo(MotionDirection.LEFT, 2);
+        MotionService.moveTo(levelContainer, playerMotionConfig, MotionDirection.RIGHT, 2);
         break;
       case 'd':
-        moveTo(player, { x: '+=5rem' });
-        moveTo(levelContainer, { x: '-=5rem' });
-        playerIsMoving = true;
+        player.moveTo(MotionDirection.RIGHT, 1);
+        MotionService.moveTo(levelContainer, playerMotionConfig, MotionDirection.LEFT, 1);
         break;
       case 'D':
-        moveTo(player, { x: '+=10rem' }, true);
-        moveTo(levelContainer, { x: '-=10rem' });
-        playerIsMoving = true;
+        player.dashTo(MotionDirection.RIGHT, 2);
+        MotionService.moveTo(levelContainer, playerMotionConfig, MotionDirection.LEFT, 2);
         break;
     }
   }
 });
-
-function moveTo(
-  target: HTMLElement,
-  motionVector: MotionVector,
-  evadeEffect: boolean = false
-) {
-  let moveTweenVars: GSAPStatic.tweenVars = {
-    ease: 'none',
-    duration: 0.3,
-    ...motionVector,
-    onComplete: () => {
-      playerIsMoving = false;
-    }
-  };
-
-  if (evadeEffect) {
-    moveTweenVars.onUpdateParams = [target];
-    moveTweenVars.onUpdate = (target: HTMLElement) => {
-      tick++;
-      if (tick % 6 === 3) {
-        let clone = target.cloneNode() as HTMLElement;
-        target.parentElement.appendChild(clone);
-        clone.style.opacity = '0.8';
-        TweenLite.to(clone, {
-          duration: 0.5,
-          opacity: 0,
-          scaleX: 0.5,
-          onCompleteParams: [clone],
-          onComplete: (clone: HTMLElement) => {
-            clone.remove();
-            tick = 0;
-          }
-        });
-      }
-    };
-  }
-
-  TweenLite.to(target, moveTweenVars);
-}
-
-function focusOnPlayer() {
-  let playerPos = player.getBoundingClientRect();
-  let windowWidth = window.innerWidth;
-  let windowHeight = window.innerHeight;
-  let translateX = `${windowWidth / 2 - playerPos.left}px`;
-  let translateY = `${windowHeight / 2 - playerPos.top}px`;
-
-  moveTo(levelContainer, {
-    x: translateX,
-    y: translateY
-  });
-}
