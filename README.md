@@ -1,7 +1,7 @@
 # Ninja Blocks - Cool Web Hack n Slash Game!
 This is a cool 2.5d web hack n slash game named: Ninja Blocks
 
-This Episode: starting with the basics of a board with a player moving on them
+**This Episode: starting with the basics of a board with a player moving on them**
 
 I have also made a cool series about me making the game in Hebrew! 
 
