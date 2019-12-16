@@ -1,9 +1,12 @@
+import { TweenLite } from 'gsap';
 import { MotionService } from '../services/motion.service';
 import { MotionDirection, IMovable, PositionVector, MotionConfig } from './motion';
+import { UtilsService } from '../services/utils.service';
 
 export abstract class Actor implements IMovable {
   private _alive: boolean = true;
   private _isMoving: boolean = false;
+  private _aimAngle: number;
 
   constructor(
     public element: HTMLElement,
@@ -11,6 +14,18 @@ export abstract class Actor implements IMovable {
     private _hp: number,
     private _position: PositionVector
   ) { }
+
+  get absolutePos(): PositionVector {
+    const elementPos = this.element.getBoundingClientRect();
+    return {
+      x: elementPos.left + (elementPos.width / 2),
+      y: elementPos.top + (elementPos.height / 2)
+    };
+  }
+
+  get aimer(): HTMLElement {
+    return this.element.querySelector('.aimer');
+  }
 
   get isMoving(): boolean {
     return this._isMoving;
@@ -50,6 +65,22 @@ export abstract class Actor implements IMovable {
       this._alive = true;
       this.revive();
     }
+  }
+
+  get aimAngle(): number {
+    return this._aimAngle;
+  }
+
+  set aimAngle(aimAngle: number) {
+    this._aimAngle = aimAngle % 360;
+    TweenLite.to(this.aimer, {
+      duration: 0,
+      rotate: this.aimAngle
+    });
+  }
+
+  get aimDirection(): MotionDirection {
+    return UtilsService.directionFromAngle(this._aimAngle);
   }
 
   abstract hit(damage: number): void;

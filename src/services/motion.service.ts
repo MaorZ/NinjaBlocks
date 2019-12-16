@@ -52,6 +52,8 @@ export class MotionService {
           tick++;
           if (tick % 6 === 3) {
             let clone = target.cloneNode() as HTMLElement;
+            let cloneCharacter = target.querySelector('.character').cloneNode(true);
+            clone.appendChild(cloneCharacter);
             target.parentElement.appendChild(clone);
             clone.style.opacity = '0.8';
             TweenLite.to(clone, {

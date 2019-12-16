@@ -1,4 +1,3 @@
-import { TweenLite } from 'gsap';
 import { fromEvent } from 'rxjs';
 import { } from 'rxjs/operators';
 import { MotionDirection } from './model/motion';

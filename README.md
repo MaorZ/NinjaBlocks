@@ -1,8 +1,7 @@
 # Ninja Blocks - Cool Web Hack n Slash Game!
 This is a cool 2.5d web hack n slash game named: Ninja Blocks
 
-**This Episode: we will show you my refactoring that I did so we can have a beautiful, readable and scalable code! 
-And special thanks to Shlomi Bitan that helped me so much with this refactoring and architecture.**
+**This Episode: We will create our first slash attack!!!**
 
 I have also made a cool series about me making the game in Hebrew! 
 
