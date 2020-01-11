@@ -1,25 +1,33 @@
 import { TweenLite } from 'gsap';
 import { MotionService } from '../services/motion.service';
-import { MotionDirection, IMovable, PositionVector, MotionConfig } from './motion';
+import {
+  MotionDirection,
+  IMovable,
+  PositionVector,
+  MotionConfig
+} from './motion';
 import { UtilsService } from '../services/utils.service';
+import { Subject, Observable } from 'rxjs';
+import { take } from 'rxjs/operators';
 
 export abstract class Actor implements IMovable {
   private _alive: boolean = true;
   private _isMoving: boolean = false;
   private _aimAngle: number;
+  public deleteMe: Subject<null> = new Subject<null>();
 
   constructor(
     public element: HTMLElement,
     private _motionConfig: MotionConfig,
     private _hp: number,
     private _position: PositionVector
-  ) { }
+  ) {}
 
   get absolutePos(): PositionVector {
     const elementPos = this.element.getBoundingClientRect();
     return {
-      x: elementPos.left + (elementPos.width / 2),
-      y: elementPos.top + (elementPos.height / 2)
+      x: elementPos.left + elementPos.width / 2,
+      y: elementPos.top + elementPos.height / 2
     };
   }
 
@@ -97,7 +105,8 @@ export abstract class Actor implements IMovable {
         numOfSteps,
         () => {
           this._isMoving = false;
-        });
+        }
+      );
       this._isMoving = true;
       return this.updatePosition(direction, numOfSteps);
     }
@@ -105,19 +114,24 @@ export abstract class Actor implements IMovable {
 
   dashTo(direction: MotionDirection, numOfSteps: number = 2): PositionVector {
     if (!this._isMoving) {
-      MotionService.dashTo(this.element,
+      MotionService.dashTo(
+        this.element,
         this.motionConfig,
         direction,
         numOfSteps,
         () => {
           this._isMoving = false;
-        });
+        }
+      );
       this._isMoving = true;
       return this.updatePosition(direction, numOfSteps);
     }
   }
 
-  updatePosition(direction: MotionDirection, numOfSteps: number): PositionVector {
+  updatePosition(
+    direction: MotionDirection,
+    numOfSteps: number
+  ): PositionVector {
     switch (direction) {
       case MotionDirection.UP:
         this._position.y += numOfSteps;
