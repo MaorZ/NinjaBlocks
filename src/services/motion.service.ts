@@ -14,15 +14,12 @@ export class MotionService {
       direction,
       numOfSteps
     );
-    TweenLite.to(
-      target,
-      {
-        ...motionVector,
-        duration: motionConfig.duration,
-        ease: motionConfig.ease,
-        onComplete: onMoved
-      }
-    );
+    TweenLite.to(target, {
+      ...motionVector,
+      duration: motionConfig.duration,
+      ease: motionConfig.ease,
+      onComplete: onMoved,
+    });
   }
 
   static dashTo(
@@ -40,36 +37,61 @@ export class MotionService {
       numOfSteps
     );
 
-    TweenLite.to(
-      target,
-      {
-        ...motionVector,
-        duration: motionConfig.duration,
-        ease: motionConfig.ease,
-        onComplete: onMoved,
-        onUpdateParams: [target],
-        onUpdate: (target: HTMLElement) => {
-          tick++;
-          if (tick % 6 === 3) {
-            let clone = target.cloneNode() as HTMLElement;
-            let cloneCharacter = target.querySelector('.character').cloneNode(true);
-            clone.appendChild(cloneCharacter);
-            target.parentElement.appendChild(clone);
-            clone.style.opacity = '0.8';
-            TweenLite.to(clone, {
-              duration: 0.5,
-              opacity: 0,
-              scaleX: 0.5,
-              onCompleteParams: [clone],
-              onComplete: (clone: HTMLElement) => {
-                clone.remove();
-                tick = 0;
-              }
-            });
-          }
+    TweenLite.to(target, {
+      ...motionVector,
+      duration: motionConfig.duration,
+      ease: motionConfig.ease,
+      onComplete: onMoved,
+      onUpdateParams: [target],
+      onUpdate: (target: HTMLElement) => {
+        tick++;
+        if (tick % 6 === 3) {
+          let clone = target.cloneNode() as HTMLElement;
+          let cloneCharacter = target
+            .querySelector('.character')
+            .cloneNode(true);
+          clone.appendChild(cloneCharacter);
+          target.parentElement.appendChild(clone);
+          clone.style.opacity = '0.8';
+          TweenLite.to(clone, {
+            duration: 0.5,
+            opacity: 0,
+            scaleX: 0.5,
+            onCompleteParams: [clone],
+            onComplete: (clone: HTMLElement) => {
+              clone.remove();
+              tick = 0;
+            },
+          });
         }
-      }
+      },
+    });
+  }
+
+  static attackTo(
+    target: HTMLElement,
+    motionConfig: MotionConfig,
+    direction: MotionDirection,
+    numOfSteps: number,
+    onMoved?: () => void
+  ) {
+    const motionVector = this.calcMotionTweenVars(
+      motionConfig.stepSize,
+      direction,
+      numOfSteps
     );
+    TweenLite.to(target, {
+      ...motionVector,
+      duration: motionConfig.duration,
+      ease: motionConfig.ease,
+      opacity: 0,
+      onComplete: () => {
+        target.remove();
+        if (onMoved) {
+          onMoved();
+        }
+      },
+    });
   }
 
   private static calcMotionTweenVars(

@@ -1,42 +1,69 @@
 import { Actor } from './actor';
 import { fromEvent } from 'rxjs';
 import { UtilsService } from '../services/utils.service';
+import { MotionService } from '../services/motion.service';
 
 export const playerMotionConfig = {
-    stepSize: 5,
-    ease: 'none',
-    duration: 0.3
+  stepSize: 5,
+  ease: 'none',
+  duration: 0.3,
 };
 
 export class Player extends Actor {
-    constructor(element: HTMLElement) {
-        super(element, playerMotionConfig, 100, { x: 0, y: 0 });
+  private attackIndex = 1;
 
-        fromEvent(window, 'mousemove').subscribe((e: MouseEvent) => {
-            this.aimAngle = UtilsService.angleFromCenter(this.absolutePos, {
-                x: e.pageX,
-                y: e.pageY
-            });
-        });
+  constructor(element: HTMLElement) {
+    super(element, playerMotionConfig, 100, { x: 0, y: 0 });
 
-        fromEvent(window, 'click').subscribe(() => {
-            console.log(UtilsService.directionFromAngle(this.aimAngle));
-        });
-    }
+    fromEvent(window, 'mousemove').subscribe((e: MouseEvent) => {
+      this.aimAngle = UtilsService.angleFromCenter(this.absolutePos, {
+        x: e.pageX,
+        y: e.pageY,
+      });
+    });
 
-    hit(damage: number): void {
-        this.hp -= damage;
-    }
+    fromEvent(window, 'click').subscribe(() => {
+      this.attack();
+    });
+  }
 
-    heal(health: number): void {
-        this.hp += health;
-    }
+  hit(damage: number): void {
+    this.hp -= damage;
+  }
 
-    kill(): void {
-        // Play the Kill animation
-    }
+  heal(health: number): void {
+    this.hp += health;
+  }
 
-    revive(): void {
-        // Play the revie animation
-    }
+  kill(): void {
+    // Play the Kill animation
+  }
+
+  revive(): void {
+    // Play the revie animation
+  }
+
+  attack(): void {
+    const attackDirection = UtilsService.directionFromAngle(this.aimAngle);
+    let attackElm: HTMLElement = UtilsService.createImgElement(
+      `assets/attack${this.attackIndex}.png`
+    );
+    this.attackIndex %= 2;
+    this.attackIndex += 1;
+    attackElm = UtilsService.placeOnFloor(
+      this.position,
+      attackElm,
+      attackDirection
+    );
+    MotionService.attackTo(
+      attackElm,
+      {
+        ease: 'none',
+        duration: 0.3,
+        stepSize: 1,
+      },
+      attackDirection,
+      1
+    );
+  }
 }

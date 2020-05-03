@@ -4,7 +4,7 @@ import {
   MotionDirection,
   IMovable,
   PositionVector,
-  MotionConfig
+  MotionConfig,
 } from './motion';
 import { UtilsService } from '../services/utils.service';
 import { Subject } from 'rxjs';
@@ -26,7 +26,7 @@ export abstract class Actor implements IMovable {
     const elementPos = this.element.getBoundingClientRect();
     return {
       x: elementPos.left + elementPos.width / 2,
-      y: elementPos.top + elementPos.height / 2
+      y: elementPos.top + elementPos.height / 2,
     };
   }
 
@@ -82,7 +82,7 @@ export abstract class Actor implements IMovable {
     this._aimAngle = aimAngle % 360;
     TweenLite.to(this.aimer, {
       duration: 0,
-      rotate: this.aimAngle
+      rotate: this.aimAngle,
     });
   }
 
@@ -94,6 +94,7 @@ export abstract class Actor implements IMovable {
   abstract heal(health: number): void;
   abstract kill(): void;
   abstract revive(): void;
+  abstract attack(): void;
 
   moveTo(direction: MotionDirection, numOfSteps: number = 1): PositionVector {
     if (!this._isMoving) {

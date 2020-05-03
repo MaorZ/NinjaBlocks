@@ -6,7 +6,7 @@ import { TweenLite } from 'gsap';
 export const zombieMotionConfig: MotionConfig = {
   duration: 0.6,
   ease: 'none',
-  stepSize: 5
+  stepSize: 5,
 };
 
 export class Zombie extends Enemy {
@@ -26,6 +26,10 @@ export class Zombie extends Enemy {
     // Nothing
   }
 
+  attack() {
+    // Nothing
+  }
+
   playKillAnimation(): Observable<null> {
     const killAnimationEnded$ = new Subject<null>();
     TweenLite.to(this.element, {
@@ -33,7 +37,7 @@ export class Zombie extends Enemy {
       scale: 0,
       onComplete: () => {
         killAnimationEnded$.next(null);
-      }
+      },
     });
 
     return killAnimationEnded$;
